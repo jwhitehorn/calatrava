@@ -15,7 +15,7 @@ describe Calatrava::AppBuilder do
                           :js_files => ['path/to/kernel.js', 'diff/path/shell.js'],
                           :kernel_bootstrap => ['path/to/kernel.coffee'],
                           :haml_files => ['diff/path/shell.haml'],
-                          :kernel_bootstrap_js => ['path/to/kernel.js'],
+                          :kernel_bootstrap_js => ['path/to/kernel.js'])}
   
   let(:app) { Calatrava::AppBuilder.new('app', 'app/build', manifest) }
 
