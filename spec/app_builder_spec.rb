@@ -15,12 +15,14 @@ describe Calatrava::AppBuilder do
                           :js_files => ['path/to/kernel.js', 'diff/path/shell.js'],
                           :kernel_bootstrap => ['path/to/kernel.coffee'],
                           :haml_files => ['diff/path/shell.haml'],
-                          :kernel_bootstrap_js => ['path/to/kernel.js'])}
+                          :kernel_bootstrap_js => ['path/to/kernel.js'],
+                          :kernel_libraries => ['path/to/external/kernel_lib.js'])}
   
   let(:app) { Calatrava::AppBuilder.new('app', 'app/build', manifest) }
 
   context '#coffee_files' do
-    subject { app.coffee_files.collect { |cf| cf.source_file.to_s } }
+    #subject { app.coffee_files.collect { |cf| cf.source_file.to_s } }
+    subject { app.coffee_files }
     
     it { should include 'path/to/kernel.coffee' }
     it { should include 'diff/path/shell.coffee' }
@@ -35,7 +37,7 @@ describe Calatrava::AppBuilder do
   end
 
   context '#js_file' do
-    subject { app.as_js_file('path/to/sample.coffee') }
+    subject { app.js_file('path/to/sample.coffee') }
 
     it { should == 'app/build/scripts/sample.js' }
   end

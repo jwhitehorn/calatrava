@@ -37,7 +37,7 @@ module Calatrava
     end
 
     def scripts
-      scripts = coffee_files.collect { |cf| "scripts/#{File.basename(cf, '.coffee')}.js" }
+      scripts = coffee_files.collect { |cf| "scripts/#{File.basename(cf.source_file, '.coffee')}.js" }
       scripts << js_files.collect { |jf| "scripts/#{File.basename(jf)}" unless jf.nil? }
       scripts.reject { | x | x.nil? }.flatten.uniq
     end

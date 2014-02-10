@@ -37,8 +37,8 @@ module Calatrava
         raise "error" if js_files.include?(File.basename(cf, '.coffee'))
       end
     end
-
-    def as_js_file(cf)
+    
+    def js_file(cf)
       "#{build_scripts_dir}/#{File.basename(cf, '.coffee')}.js"
     end
 
@@ -62,14 +62,7 @@ module Calatrava
     end
 
     def load_instructions
-      results = @manifest.kernel_bootstrap_js.collect do |jf|
-        name = "#{build_scripts_dir}/#{File.basename(jf)}"
-        Pathname.new(name).relative_path_from(build_path).to_s
-      end
-      results += @manifest.kernel_bootstrap.collect do |cf|
-        Pathname.new(as_js_file(cf)).relative_path_from(build_path).to_s
-      end
-      results.join($/)
+      feature_files.concat(library_files).join($/)
     end
 
     def haml_files
@@ -103,7 +96,7 @@ module Calatrava
       end
 
       app_files += coffee_files.collect do |cf|
-        file as_js_file(cf) => [build_scripts_dir, cf] do
+        file js_file(cf) => [build_scripts_dir, cf] do
           check_if_javascript_already_exist cf
           coffee cf, build_scripts_dir
         end
