@@ -14,9 +14,16 @@ module Calatrava
         Dir['kernel/app/*'].select { |n| File.directory? n }.collect do |n|
           {
             :name => File.basename(n),
-            :coffee => Dir["#{n}/*.coffee"]
+            :coffee => Dir["#{n}/*.coffee"],
+            :js => Dir["#{n}/*.js"]
           }
         end
+      end
+    end
+
+    def js_files
+      Dir.chdir @path do
+        Dir["kernel/app/*.js"] + Dir["kernel/plugins/*.js"]
       end
     end
 

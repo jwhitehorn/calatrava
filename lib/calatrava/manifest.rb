@@ -21,6 +21,12 @@ module Calatrava
       @feature_list
     end
 
+    def js_files
+      [@shell, @kernel].collect do |src|
+        src.js_files + feature_files(src, :js)
+      end.flatten
+    end
+
     def coffee_files
       [@shell, @kernel].collect do |src|
         src.coffee_files + feature_files(src, :coffee)
@@ -31,10 +37,14 @@ module Calatrava
       @kernel.coffee_files + feature_files(@kernel, :coffee)
     end
 
+    def kernel_bootstrap_js
+      (@kernel.js_files + feature_files(@kernel, :js)).uniq
+    end
+
     def haml_files
       @shell.haml_files + feature_files(@shell, :haml)
     end
-    
+
     def css_files
       @shell.css_files
     end

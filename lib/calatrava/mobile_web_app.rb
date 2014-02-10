@@ -24,13 +24,28 @@ module Calatrava
       end
     end
 
+    def js_files
+      Dir.chdir @path do
+        mf_js = @manifest.js_files
+        web_js = Dir['web/app/source/*.js']
+        mf_js + web_js
+      end
+    end
+
     def haml_files
       Dir.chdir(@path) { @manifest.haml_files }
     end
 
     def scripts
-      coffee_files.collect do |cf|
-        cf.output_path.gsub("#{build_dir}/", "")
+      scripts = coffee_files.collect { |cf| "scripts/#{File.basename(cf, '.coffee')}.js" }
+      scripts << js_files.collect { |jf| "scripts/#{File.basename(jf)}" unless jf.nil? }
+      scripts.reject { | x | x.nil? }.flatten.uniq
+    end
+
+    def copy_js_files
+      js_files.collect do | jf |
+        FileUtils.mkdir_p("#{scripts_build_dir}")
+        FileUtils.copy(jf, "#{scripts_build_dir}/#{File.basename(jf)}") unless jf.nil?
       end
     end
 
@@ -54,6 +69,7 @@ module Calatrava
       task :shared => [images_build_dir, scripts_build_dir] do
         cp_ne "assets/images/*", File.join(build_dir, 'images')
         cp_ne "assets/lib/*.js", scripts_build_dir
+        copy_js_files
       end        
 
       desc "Build the web app"
