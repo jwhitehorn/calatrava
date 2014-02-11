@@ -40,6 +40,11 @@ module Calatrava
       task :deploy => :publish do
         sh "adb install -r artifacts/#{ENV['CALATRAVA_ENV']}/#{@proj_name}-debug.apk"
       end
+      
+      desc "Runs (and deploys) the app to the device/emulator"
+      task :run => :deploy do
+        sh "adb shell am start -n com.#{@proj_name}/.MAIN"
+      end
 
       desc "Clean droid"
       task :clean do
