@@ -1,7 +1,7 @@
 source :rubygems
 
 gem "rake", ">= 0.9.5"
-gem "calatrava"{{#dev?}}, :path => '../'{{/dev?}}
+gem "calatrava", :git => 'git@github.com:jwhitehorn/calatrava.git'
 {{#mac?}}gem "xcodeproj", ">= 0.4.0"
 gem "cocoapods", ">= 0.16.0"{{/mac?}}
 
